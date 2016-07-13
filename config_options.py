@@ -3,6 +3,7 @@
 # 07/13/2016
 
 import re
+import os
 
 def process_config(fname): #{{{
     """ 
@@ -21,6 +22,13 @@ def process_config(fname): #{{{
             keyvals = processformat.findall(aline)[0]
             config.update({keyvals[0]: dictfilter.get(keyvals[1], keyvals[1])})
     return config #}}}
+
+def write_config(config, fname): #{{{
+    with open(fname, 'w') as af:
+        for akey in config:
+            af.write('setenv %s %s\n'%(akey, config[akey]))
+
+    return #}}}
 
 def test(fname):
     print process_config(fname)
