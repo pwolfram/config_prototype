@@ -5,7 +5,22 @@
 import re
 import os
 
-def process_config(fname): #{{{
+#http://stackoverflow.com/questions/5376837/how-can-i-do-an-if-run-from-ipython-test-in-python
+def run_from_ipython():
+    try:
+        __IPYTHON__
+        return True
+    except NameError:
+        return False
+
+def update_config_with_globals(config):
+    if not run_from_ipython():
+        config.update(process_config())
+    else:
+        print 'Running from ipython: using local config (no change made)'
+    return config
+
+def process_config(fname='global_config_example.csh'): #{{{
     """ 
     Builds configuration file from *.csh environment variable commands to
     build python dictionary.
